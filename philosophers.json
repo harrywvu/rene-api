@@ -1,0 +1,382 @@
+[
+  {
+    "name": "Plato",
+    "scores": {
+      "epistemology": 0.15,
+      "metaphysics": 0.08,
+      "ethics": 0.12,
+      "free_will": 0.5,
+      "politics": 0.18,
+      "theology": 0.22
+    },
+    "justifications": {
+      "epistemology": "In the Meno and Phaedo, Plato argues knowledge is recovered by reason through recollection of the Forms, independent of sensory experience.",
+      "metaphysics": "The Theory of Forms in the Republic posits that true reality consists of immaterial, intelligible Forms of which the physical world is merely a shadow.",
+      "ethics": "In the Republic, the Form of the Good is an objective, eternal moral order discoverable by philosophical reason, independent of human opinion.",
+      "free_will": "Plato does not systematically address free will versus determinism; his focus on the rational soul's choice suggests agency, but the issue is genuinely ambiguous across the dialogues.",
+      "politics": "The Republic advocates rule by philosopher-kings with a rigid hierarchical class structure, centralized control of education, property, and reproduction.",
+      "theology": "In the Timaeus, the cosmos is ordered by a divine Demiurge who fashions the world according to eternal paradigms, placing divinity at the center of cosmology."
+    }
+  },
+  {
+    "name": "Aristotle",
+    "scores": {
+      "epistemology": 0.42,
+      "metaphysics": 0.58,
+      "ethics": 0.28,
+      "free_will": 0.55,
+      "politics": 0.5,
+      "theology": 0.32
+    },
+    "justifications": {
+      "epistemology": "In the Posterior Analytics, Aristotle holds that knowledge begins from sense experience but is completed by demonstrative reason, creating a synthesis of empiricism and rationalism.",
+      "metaphysics": "Aristotle's hylomorphism in the Metaphysics holds that all substances are composites of form and matter, placing him between idealism and pure materialism.",
+      "ethics": "The Nicomachean Ethics grounds virtue in an objective human telos—eudaimonia—discoverable by reason, though achieved through cultivated habit rather than abstract rules.",
+      "free_will": "In the Nicomachean Ethics Book III, Aristotle distinguishes voluntary from involuntary action and assigns moral responsibility, generally affirming human agency.",
+      "politics": "In the Politics, Aristotle advocates a mixed constitution (polity) balancing democracy and oligarchy, representing a moderate middle position.",
+      "theology": "The Metaphysics Book Lambda posits an Unmoved Mover as the ultimate cause and object of thought, but this deity is an abstract intellect rather than a personal God."
+    }
+  },
+  {
+    "name": "René Descartes",
+    "scores": {
+      "epistemology": 0.08,
+      "metaphysics": 0.22,
+      "ethics": 0.35,
+      "free_will": 0.72,
+      "politics": 0.5,
+      "theology": 0.25
+    },
+    "justifications": {
+      "epistemology": "In the Meditations on First Philosophy, Descartes establishes the cogito through pure rational introspection, making reason the foundation of all certain knowledge.",
+      "metaphysics": "Meditation VI argues that mind and body are distinct substances, affirming that consciousness is a fundamentally non-physical reality.",
+      "ethics": "In The Passions of the Soul, Descartes presents ethical control over the passions as a rational science of the soul, implying an objective standard of human flourishing.",
+      "free_will": "The Fourth Meditation defends human freedom of the will as so extensive that it resembles God's will, making error a product of misused freedom rather than determinism.",
+      "politics": "Descartes was not a systematic political philosopher; his correspondence and context suggest moderate conservatism, but his position is genuinely ambiguous.",
+      "theology": "God is indispensable in the Meditations as the guarantor of clear and distinct perceptions and the creator of eternal truths, placing theism at the center of his epistemology."
+    }
+  },
+  {
+    "name": "David Hume",
+    "scores": {
+      "epistemology": 0.92,
+      "metaphysics": 0.75,
+      "ethics": 0.78,
+      "free_will": 0.35,
+      "politics": 0.65,
+      "theology": 0.9
+    },
+    "justifications": {
+      "epistemology": "In An Enquiry Concerning Human Understanding, Hume argues that all ideas originate from sensory impressions, and that reason alone cannot establish matters of fact.",
+      "metaphysics": "In A Treatise of Human Nature, Hume's bundle theory of the self and skepticism about substance suggest there is no mind or object independent of perceptual experiences.",
+      "ethics": "In Book III of the Treatise, Hume argues that moral distinctions are not derived from reason but from moral sentiment, grounding ethics in subjective feeling rather than objective fact.",
+      "free_will": "Section VIII of the Enquiry defends a compatibilist position: liberty means acting according to determinate motives without external constraint, within a causally determined universe.",
+      "politics": "Hume's essays express skepticism toward radical reform and contract theory, favoring established institutions, moderate government, and the rule of law.",
+      "theology": "Dialogues Concerning Natural Religion systematically dismantles the cosmological, design, and ontological arguments, leaving no rational basis for theistic belief."
+    }
+  },
+  {
+    "name": "Immanuel Kant",
+    "scores": {
+      "epistemology": 0.48,
+      "metaphysics": 0.38,
+      "ethics": 0.18,
+      "free_will": 0.5,
+      "politics": 0.65,
+      "theology": 0.55
+    },
+    "justifications": {
+      "epistemology": "In the Critique of Pure Reason, Kant argues that knowledge requires both sensory intuitions and the a priori categories of understanding, synthesizing empiricism and rationalism.",
+      "metaphysics": "Transcendental idealism holds that we know only appearances structured by our cognitive faculties, while things-in-themselves remain inaccessible, placing Kant between idealism and materialism.",
+      "ethics": "The Groundwork of the Metaphysics of Morals establishes the Categorical Imperative as an objective moral law binding all rational beings, discoverable by pure practical reason.",
+      "free_will": "The Third Antinomy and Critique of Practical Reason place free will in the noumenal realm while accepting phenomenal determinism, making his position genuinely ambiguous on a single axis.",
+      "politics": "In Perpetual Peace and What Is Enlightenment?, Kant defends republican government, cosmopolitan law, and the free public use of reason.",
+      "theology": "Kant denies theoretical knowledge of God in the Critique of Pure Reason but postulates God's existence as necessary for the highest good in practical reason, placing him in genuine ambiguity."
+    }
+  },
+  {
+    "name": "John Locke",
+    "scores": {
+      "epistemology": 0.85,
+      "metaphysics": 0.6,
+      "ethics": 0.48,
+      "free_will": 0.42,
+      "politics": 0.82,
+      "theology": 0.38
+    },
+    "justifications": {
+      "epistemology": "An Essay Concerning Human Understanding argues that the mind is a blank slate (tabula rasa) and all knowledge derives from sensory experience and reflection on that experience.",
+      "metaphysics": "Locke's distinction between primary and secondary qualities in the Essay acknowledges a physical reality while retaining representational complexity, stopping short of full materialism.",
+      "ethics": "Locke's Essays on the Law of Nature ground morality in God's natural law accessible to reason, placing him between moral realism and divine command subjectivity.",
+      "free_will": "In Essay Book II, Chapter XXI, Locke revises his position toward compatibilism: the will is determined by uneasiness, but voluntary action constitutes a meaningful sense of freedom.",
+      "politics": "The Second Treatise of Government argues for natural rights to life, liberty, and property, limited government by consent, and the right to revolution against tyranny.",
+      "theology": "The Reasonableness of Christianity presents a deistic-Christian position: Locke accepts a creator God and biblical revelation but subjects faith to rational examination."
+    }
+  },
+  {
+    "name": "Friedrich Nietzsche",
+    "scores": {
+      "epistemology": 0.68,
+      "metaphysics": 0.62,
+      "ethics": 0.95,
+      "free_will": 0.15,
+      "politics": 0.6,
+      "theology": 0.95
+    },
+    "justifications": {
+      "epistemology": "In Beyond Good and Evil and On the Genealogy of Morals, Nietzsche advances perspectivism—the claim that all knowledge is conditioned by bodily drives and cultural interpretation, not pure reason or raw sensation.",
+      "metaphysics": "Nietzsche's Will to Power and eternal recurrence present a naturalistic metaphysics of dynamic, chaotic forces, explicitly rejecting Platonic idealism while retaining poetic ontological commitments.",
+      "ethics": "Beyond Good and Evil and the Genealogy debunk objective morality as a power strategy, arguing that all values are human creations serving psychological and historical interests.",
+      "free_will": "In Twilight of the Idols, Nietzsche attacks the errors of free will as a theological invention, holding that human action is determined by physiology, instinct, and cultural conditioning.",
+      "politics": "Nietzsche is elitist, anti-democratic, and anti-socialist in the Genealogy and Antichrist, yet he champions radical individual self-creation against herd conformity and state power.",
+      "theology": "The Gay Science §125 announces the death of God as a cultural event eliminating the metaphysical foundation for Western values, making Nietzsche an explicit and radical atheist."
+    }
+  },
+  {
+    "name": "Jean-Paul Sartre",
+    "scores": {
+      "epistemology": 0.6,
+      "metaphysics": 0.35,
+      "ethics": 0.88,
+      "free_will": 0.95,
+      "politics": 0.4,
+      "theology": 0.95
+    },
+    "justifications": {
+      "epistemology": "Being and Nothingness employs phenomenology, arguing that knowledge arises from consciousness's direct engagement with the world rather than abstract reason or passive sensation.",
+      "metaphysics": "Sartre's being-for-itself (consciousness as nothingness) and being-in-itself distinguish a non-material, intentional consciousness from brute physical existence.",
+      "ethics": "Existentialism Is a Humanism declares that existence precedes essence: humans create their values through radical choice, with no pre-given moral framework.",
+      "free_will": "Being and Nothingness asserts radical freedom: consciousness is condemned to be free, and even refusing to choose is itself a choice for which we are fully responsible.",
+      "politics": "Sartre moved toward Marxism in the Critique of Dialectical Reason, supporting revolutionary politics and collective struggle, which tempers his individualist existentialism.",
+      "theology": "Sartre's existentialism is explicitly atheistic: without God, there is no human nature, no predetermined essence, and no transcendent source of moral values."
+    }
+  },
+  {
+    "name": "Simone de Beauvoir",
+    "scores": {
+      "epistemology": 0.58,
+      "metaphysics": 0.4,
+      "ethics": 0.82,
+      "free_will": 0.85,
+      "politics": 0.5,
+      "theology": 0.9
+    },
+    "justifications": {
+      "epistemology": "The Second Sex employs a phenomenological method, analyzing women's lived bodily experience as the basis for understanding oppression, synthesizing reason and situated perception.",
+      "metaphysics": "De Beauvoir affirms embodied consciousness—neither purely material nor disembodied spirit—arguing that the body is a situation through which freedom is exercised.",
+      "ethics": "The Ethics of Ambiguity argues that values are not given but must be invented through free engagement with the world, rejecting both moral realism and quietist relativism.",
+      "free_will": "In The Ethics of Ambiguity, de Beauvoir affirms radical freedom as the human condition, but emphasizes that this freedom is always situated by concrete historical and bodily circumstances.",
+      "politics": "De Beauvoir's socialist feminism in The Second Sex and subsequent political engagement straddles individual emancipation and collective social transformation.",
+      "theology": "As an atheist existentialist, de Beauvoir denies divine foundations for ethics or human nature, grounding meaning entirely in human projects."
+    }
+  },
+  {
+    "name": "Karl Marx",
+    "scores": {
+      "epistemology": 0.7,
+      "metaphysics": 0.88,
+      "ethics": 0.82,
+      "free_will": 0.15,
+      "politics": 0.28,
+      "theology": 0.88
+    },
+    "justifications": {
+      "epistemology": "The German Ideology and Capital apply historical materialism, holding that ideas and consciousness are shaped by material productive practices and class interests.",
+      "metaphysics": "Dialectical materialism in the German Ideology and Economic and Philosophic Manuscripts of 1844 asserts that the material conditions of production determine social and intellectual life.",
+      "ethics": "In the German Ideology, Marx treats morality as ideological superstructure reflecting class interests rather than objective truths, while simultaneously condemning capitalism as exploitative.",
+      "free_will": "Historical materialism in the Preface to A Contribution to the Critique of Political Economy treats social transformation as driven by deterministic contradictions between forces and relations of production.",
+      "politics": "The Communist Manifesto calls for revolutionary overthrow of bourgeois society and a temporary dictatorship of the proletariat as the path to eventual stateless communism.",
+      "theology": "In A Contribution to the Critique of Hegel's Philosophy of Right, Marx calls religion the opium of the people and the sigh of the oppressed creature, grounding his materialism in explicit atheism."
+    }
+  },
+  {
+    "name": "Thomas Hobbes",
+    "scores": {
+      "epistemology": 0.7,
+      "metaphysics": 0.78,
+      "ethics": 0.32,
+      "free_will": 0.08,
+      "politics": 0.05,
+      "theology": 0.42
+    },
+    "justifications": {
+      "epistemology": "In Leviathan, Hobbes derives all knowledge from the senses and defines reasoning as mental computation, grounding his philosophy in an empiricist theory of ideas.",
+      "metaphysics": "Leviathan's opening chapters reduce the human being to matter in motion, holding that all mental phenomena—including the soul—are motions in the brain and heart.",
+      "ethics": "Leviathan Chapters 14–15 present the Laws of Nature as rational precepts of self-preservation discovered by reason, binding in foro interno as objective prudential dictates.",
+      "free_will": "In Leviathan Chapter XXI, Hobbes defines the will as the last appetite in deliberation, and insists all human action is causally necessitated by appetite, aversion, and external objects.",
+      "politics": "Leviathan Chapter XVII argues that only an absolute sovereign with unlimited power can prevent the war of all against all and secure civil peace.",
+      "theology": "Leviathan's Part III subjects scripture and prophecy to political interpretation; Hobbes acknowledges God as first cause but makes natural religion minimal and politically subordinate."
+    }
+  },
+  {
+    "name": "John Stuart Mill",
+    "scores": {
+      "epistemology": 0.8,
+      "metaphysics": 0.55,
+      "ethics": 0.68,
+      "free_will": 0.4,
+      "politics": 0.9,
+      "theology": 0.72
+    },
+    "justifications": {
+      "epistemology": "A System of Logic defends an empiricist epistemology in which all knowledge, including mathematics, ultimately derives from experience, though Mill allows more room for inference than Hume.",
+      "metaphysics": "In An Examination of Sir William Hamilton's Philosophy, Mill advances toward neutral monism, holding that matter and mind are both permanent possibilities of sensation.",
+      "ethics": "Utilitarianism defends the greatest happiness principle as an objective moral standard, yet grounds it in aggregate subjective happiness rather than transcendent moral facts.",
+      "free_will": "A System of Logic, Book VI, Chapter 2 presents a compatibilist view: human action is causally determined by character and circumstances, yet we are free insofar as our actions flow from our own desires.",
+      "politics": "On Liberty argues for the harm principle as the sole justification for restricting individual conduct, defending near-absolute freedom of thought, speech, and lifestyle experimentation.",
+      "theology": "Three Essays on Religion reveals Mill as an agnostic: he rejects revealed religion and the personal God of Christianity while holding out possibility of a limited, non-omnipotent deity."
+    }
+  },
+  {
+    "name": "Baruch Spinoza",
+    "scores": {
+      "epistemology": 0.25,
+      "metaphysics": 0.15,
+      "ethics": 0.18,
+      "free_will": 0.05,
+      "politics": 0.62,
+      "theology": 0.3
+    },
+    "justifications": {
+      "epistemology": "The Ethics presents three kinds of knowledge, with the highest—scientia intuitiva—grasping truth through rational intuition of God's essence, independent of sensory experience.",
+      "metaphysics": "Ethics Part I demonstrates substance monism: God is the only substance, consisting of infinite attributes including thought and extension, making reality fundamentally mental in structure.",
+      "ethics": "Ethics Part V presents ethical knowledge as objective: the intellectual love of God follows necessarily from adequate ideas, and virtue consists in acting from the necessity of one's own rational nature.",
+      "free_will": "Ethics Part II, Proposition 48 and its scholium deny that the will is a faculty of free choice; humans deceive themselves in thinking they are free when they are determined by prior adequate or inadequate causes.",
+      "politics": "The Theological-Political Treatise and Political Treatise defend democracy, freedom of thought and speech, and limit religious authority over the state.",
+      "theology": "Spinoza's identification of God with Nature (Deus sive Natura) in the Ethics is pantheistic: God exists but is impersonal, infinite substance, not a transcendent creator or lawgiver."
+    }
+  },
+  {
+    "name": "Arthur Schopenhauer",
+    "scores": {
+      "epistemology": 0.3,
+      "metaphysics": 0.22,
+      "ethics": 0.42,
+      "free_will": 0.1,
+      "politics": 0.48,
+      "theology": 0.45
+    },
+    "justifications": {
+      "epistemology": "The World as Will and Representation works within Kant's idealist framework, holding that the world is representation structured by the subject's a priori forms, not raw empirical data.",
+      "metaphysics": "Book IV and the Supplements argue that behind the world of appearances lies the Will—a blind, non-rational, non-material metaphysical force constituting the inner essence of all things.",
+      "ethics": "On the Basis of Morality grounds ethics in compassion rooted in the metaphysical identity of all beings through the Will, creating a quasi-objective ethics that transcends individual egoism.",
+      "free_will": "The Essay on the Freedom of the Will (prize-winning essay) argues rigorously for strict determinism: every act is necessitated by motives acting on character, and free will is an illusion.",
+      "politics": "Schopenhauer was not a systematic political philosopher; he expressed conservative, anti-nationalist, and broadly anti-revolutionary sentiments without developing a political theory.",
+      "theology": "Schopenhauer rejects the personal God of Western theism as metaphysically incoherent, yet incorporates Upanishadic and Buddhist spiritual frameworks, placing him in genuine ambiguity."
+    }
+  },
+  {
+    "name": "Albert Camus",
+    "scores": {
+      "epistemology": 0.55,
+      "metaphysics": 0.5,
+      "ethics": 0.78,
+      "free_will": 0.82,
+      "politics": 0.48,
+      "theology": 0.95
+    },
+    "justifications": {
+      "epistemology": "The Myth of Sisyphus grounds philosophical insight in lived consciousness of the absurd, a stance that resists pure rationalism and pure empiricism alike in favor of experiential lucidity.",
+      "metaphysics": "Camus's absurd is a metaphysical stance that neither affirms transcendent meaning (idealism) nor reduces existence to mere mechanism (materialism); his position is genuinely ambiguous on this axis.",
+      "ethics": "The Rebel argues that values are created through human solidarity and rebellion against oppression, rather than discovered in nature or decreed by authority.",
+      "free_will": "The Myth of Sisyphus presents conscious revolt against the absurd as a free choice that defines human dignity; Sisyphus is happy because he chooses his fate knowingly.",
+      "politics": "The Rebel and Camus's journalism critique both authoritarian communism and capitalist exploitation, leaning toward anarcho-syndicalism and Mediterranean humanism.",
+      "theology": "The Myth of Sisyphus opens with the claim that suicide is the only serious philosophical problem and explicitly rejects God and transcendent meaning as philosophical evasions."
+    }
+  },
+  {
+    "name": "Søren Kierkegaard",
+    "scores": {
+      "epistemology": 0.35,
+      "metaphysics": 0.2,
+      "ethics": 0.4,
+      "free_will": 0.88,
+      "politics": 0.38,
+      "theology": 0.08
+    },
+    "justifications": {
+      "epistemology": "Concluding Unscientific Postscript to Philosophical Fragments defines truth as subjectivity, attacking Hegelian systematic rationalism in favor of passionate, personal commitment.",
+      "metaphysics": "Against Hegel's objective idealism, Kierkegaard in the Postscript and Sickness Unto Death affirms that reality is grasped through subjective existence, anguish, and faith rather than abstract system.",
+      "ethics": "Fear and Trembling's teleological suspension of the ethical subordinates universal moral law to the individual's absolute relation to God, making ethics subservient to faith.",
+      "free_will": "Either/Or and The Concept of Anxiety present choice as constitutive of the self; the freely chosen leap into faith or despair is the fundamental act of human existence.",
+      "politics": "The Present Age and Two Ages express contempt for democratic leveling and the public, prioritizing the single individual over any political collective.",
+      "theology": "Kierkegaard's entire authorship is oriented toward Christian faith: God is the absolute telos, and the individual stands before God in infinite personal concern."
+    }
+  },
+  {
+    "name": "Bertrand Russell",
+    "scores": {
+      "epistemology": 0.75,
+      "metaphysics": 0.6,
+      "ethics": 0.65,
+      "free_will": 0.3,
+      "politics": 0.78,
+      "theology": 0.92
+    },
+    "justifications": {
+      "epistemology": "The Problems of Philosophy and Our Knowledge of the External World defend empiricism modified by logical and mathematical knowledge, with sense-data as the foundational source of knowledge.",
+      "metaphysics": "Russell's logical atomism in The Philosophy of Logical Atomism and later neutral monism analyze reality into logical structures and events, leaning materialist but retaining logical-abstract entities.",
+      "ethics": "Russell's writings on ethics (e.g., Religion and Science, The Conquest of Happiness) reject objective moral facts while advocating a scientific, humanistic approach to ethical questions.",
+      "free_will": "In Religion and Science and other works, Russell defends determinism in physics and physiology, arguing that the feeling of free will is an illusion produced by ignorance of causes.",
+      "politics": "Russell's political works (Roads to Freedom, Common Sense and Nuclear Warfare) advocate democratic socialism, international governance, pacifism, and individual civil liberties.",
+      "theology": "Why I Am Not a Christian dismantles theistic arguments and moral authority of religion, presenting Russell as an explicit atheist and humanist."
+    }
+  },
+  {
+    "name": "Ludwig Wittgenstein",
+    "scores": {
+      "epistemology": 0.48,
+      "metaphysics": 0.5,
+      "ethics": 0.5,
+      "free_will": 0.5,
+      "politics": 0.45,
+      "theology": 0.52
+    },
+    "justifications": {
+      "epistemology": "The Philosophical Investigations argues that meaning arises from use in language games and forms of life, a position that does not map cleanly onto the rationalism-empiricism distinction.",
+      "metaphysics": "The Tractatus Logico-Philosophicus dismisses traditional metaphysics as nonsense; the Investigations dissolve metaphysical problems into linguistic confusion, making Wittgenstein's position genuinely ambiguous.",
+      "ethics": "The Lecture on Ethics and Tractatus 6.4–6.5 hold that ethics cannot be stated in propositions but shows itself; this transcendental view of ethics resists placement on the realist-relativist axis.",
+      "free_will": "Wittgenstein does not systematically address free will; remarks in the Notebooks and Philosophical Investigations touch on voluntary action without resolving the determinism-libertarianism debate.",
+      "politics": "Wittgenstein was not a political philosopher; personal conservatism and cultural pessimism in Culture and Value suggest leanings, but his political position is genuinely ambiguous.",
+      "theology": "Wittgenstein famously remarked that he was not a religious man but could not help seeing every problem from a religious point of view; his philosophy is methodologically atheistic yet culturally and ethically theistic-adjacent."
+    }
+  },
+  {
+    "name": "Michel Foucault",
+    "scores": {
+      "epistemology": 0.6,
+      "metaphysics": 0.5,
+      "ethics": 0.88,
+      "free_will": 0.38,
+      "politics": 0.35,
+      "theology": 0.88
+    },
+    "justifications": {
+      "epistemology": "The Archaeology of Knowledge analyzes historical a priori conditions of knowledge (epistemes), rejecting both pure empiricism and transcendental rationalism in favor of historical conditions of discourse.",
+      "metaphysics": "Foucault's History of Sexuality and The Order of Things treat the body and life as constructed by discourse and power, deliberately avoiding commitment to either idealism or materialism.",
+      "ethics": "The History of Sexuality Volumes 2 and 3 and Fearless Speech present ethics as practices of the self (technologies of the self), emphasizing self-fashioning rather than universal moral codes.",
+      "free_will": "Discipline and Punish and The History of Sexuality analyze subjects as produced by power relations, discourses, and institutions, severely constraining individual agency while allowing spaces of resistance.",
+      "politics": "Foucault's analyses of biopower, discipline, and governmentality critique both authoritarian and liberal institutions, positioning him outside a simple libertarian-authoritarian framework.",
+      "theology": "Foucault's early works on madness and clinics, and his consistent genealogy of Christian pastoral power, position him as a secular thinker explicitly opposed to religious moral frameworks."
+    }
+  },
+  {
+    "name": "Confucius",
+    "scores": {
+      "epistemology": 0.5,
+      "metaphysics": 0.35,
+      "ethics": 0.15,
+      "free_will": 0.7,
+      "politics": 0.22,
+      "theology": 0.3
+    },
+    "justifications": {
+      "epistemology": "The Analects 2.15 states that learning without thought is labor lost and thought without learning is perilous, affirming a synthesis of empirical learning (xue) and rational reflection (si).",
+      "metaphysics": "The Analects affirm Heaven (Tian) as the source of moral order and the Mandate of Heaven, grounding reality in a spiritual-moral cosmos rather than pure physical matter.",
+      "ethics": "The Analects present ren (benevolence), li (ritual propriety), and yi (righteousness) as objective virtues constituting the dao, independent of individual preference.",
+      "free_will": "The Analects emphasize moral self-cultivation (xiushen) through deliberate effort and choice; Confucius holds that individuals can become exemplary persons through committed practice.",
+      "politics": "The Analects advocate government by moral exemplars (junzi) through ritual and virtue rather than laws and punishments, establishing a hierarchical but benevolent political order.",
+      "theology": "Confucius speaks of Heaven (Tian) as a moral-spiritual force that guides and judges, but is agnostic about personal afterlife and supernatural beings, occupying an ambiguous theistic position."
+    }
+  }
+]
