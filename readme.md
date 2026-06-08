@@ -21,3 +21,10 @@ return a JSON object of the philosopher closest to you. example:
       "theology": "In the Timaeus, the cosmos is ordered by a divine Demiurge who fashions the world according to eternal paradigms, placing divinity at the center of cosmology."
     }
 
+labels
+epistemology: Rationalism → Empiricism
+metaphysics: Idealism → Materialism
+ethics: Moral Realism → Moral Relativism
+free_will: Hard Determinism → Libertarian Free Will
+politics: Authoritarianism → Libertarianism
+theology: Strong Theism → Strong Atheism

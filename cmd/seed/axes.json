@@ -1,0 +1,32 @@
+[
+  {
+    "name": "epistemology",
+    "low_label": "Rationalism",
+    "high_label": "Empiricism"
+  },
+  {
+    "name": "metaphysics",
+    "low_label": "Idealism",
+    "high_label": "Materialism"
+  },
+  {
+    "name": "ethics",
+    "low_label": "Moral Realism",
+    "high_label": "Moral Relativism"
+  },
+  {
+    "name": "free_will",
+    "low_label": "Hard Determinism",
+    "high_label": "Libertarian Free Will"
+  },
+  {
+    "name": "politics",
+    "low_label": "Authoritarianism",
+    "high_label": "Libertarianism"
+  },
+  {
+    "name": "theology",
+    "low_label": "Strong Theism",
+    "high_label": "Strong Atheism"
+  }
+]

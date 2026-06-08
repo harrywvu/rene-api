@@ -1,9 +1,7 @@
-package main
+package db
 
 import (
 	"context"
-	"database/sql"
-
 	// "fmt"
 	"log"
 	"os"
@@ -14,7 +12,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func connectDB() *pgxpool.Pool {
+func ConnectDB() *pgxpool.Pool {
 	dsn := os.Getenv("DSN")
 
 	config, err := pgxpool.ParseConfig(dsn)

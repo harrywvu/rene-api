@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS philosophers;
+DROP TABLE IF EXISTS axes;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS philosopher_scores;
