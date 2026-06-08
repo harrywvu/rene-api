@@ -3,14 +3,14 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
-	"fmt"
-
 	"github.com/harrywvu/rene-api/internal/db"
 	"github.com/harrywvu/rene-api/internal/models"
 )
 
+// returns a slice of the structs with the JSON data
 func loadJSON[T any](path string) ([]T, error) {
 	jsonData, err := os.ReadFile(path)
 	if err != nil {
@@ -58,8 +58,16 @@ func main() {
 		if err != nil {log.Fatal(err)}
 	}
 
-	axisLookupMap := make(map[string]int)
+	// seed Questions data
+	questions, err := loadJSON[models.Question]("questions.json")
+	if err != nil {log.Fatalf("failed to load : %v", err)}
+	
+	for _, question := range questions {
+		if question.Text == "" {log.Fatalf("question cannot be empty")}
+	}
 
+	// gives a reference to the correct axis id for foreign key
+	axisLookupMap := make(map[string]int)
 	rows, err := pool.Query(context.Background(), "SELECT name, id FROM axes")
 	if err != nil {log.Fatal(err)}
 	defer rows.Close()
@@ -76,6 +84,22 @@ func main() {
 
 	if err := rows.Err(); err != nil {log.Fatal(err)}
 
-	
+	for _, question := range questions {
+		axisID, ok := axisLookupMap[question.Axis]
+		if !ok {
+		    log.Fatalf("unknown axis: %s", question.Axis)
+		}
+		_, err := pool.Exec(
+			context.Background(),
+			`INSERT into questions (
+				axis_id, text, weight
+				) VALUES ($1,$2,$3)
+				ON CONFLICT (text) DO NOTHING`,
+			axisID,
+			question.Text,
+			question.Weight,
+		)
+		if err != nil {log.Fatal(err)}
+	}
 
 }
