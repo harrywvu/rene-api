@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	"github.com/harrywvu/rene-api/internal/db"
 	"github.com/harrywvu/rene-api/internal/models"
 )
@@ -102,4 +103,38 @@ func main() {
 		if err != nil {log.Fatal(err)}
 	}
 
+	philosophers, err := loadJSON[models.Philosopher]("philosophers.json")
+	if err != nil {log.Fatalf("failed to load : %v", err)}
+
+	for _, philospher := range philosophers {
+		if philospher.Name == "" {log.Fatalf("Philosopher name cannot be empty")}
+	}
+
+	for _, philosopher := range philosophers{
+		_, err := pool.Exec(
+			context.Background(),
+			"INSERT INTO philosophers (name) VALUES ($1) ON CONFLICT (name) DO NOTHING",
+			philosopher.Name,
+		)
+		if err != nil {
+		    log.Fatal(err)
+		}
+	}
+	
+	philosopherLookupMap := make(map[string]int)
+	rows, err = pool.Query(context.Background(), "SELECT name, id FROM philosophers")
+	if err != nil {log.Fatal(err)}
+	defer rows.Close()
+
+	for rows.Next(){
+		var name string; // key
+		var id int; 	// value
+
+		err := rows.Scan(&name, &id)
+		if err != nil {log.Fatal(err)}
+
+		philosopherLookupMap[name] = id
+	}
+
+	if err := rows.Err(); err != nil {log.Fatal(err)}
 }
