@@ -19,3 +19,8 @@ type Philosopher struct {
     Scores         map[string]float32 `json:"scores"`
     Justifications map[string]string  `json:"justifications"`
 }
+
+type Answer struct {
+	QuestionID int     `json:"question_id"`
+    Score      float64 `json:"score"`
+}

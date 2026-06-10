@@ -29,11 +29,11 @@ func ConnectDB() *pgxpool.Pool {
 		log.Fatalf("Error creating connection pool: %v", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 2 * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
-	if err:= pool.Ping(ctx); err != nil {
-	 	log.Fatalf("Error connecting to the database: %v", err)
+	if err := pool.Ping(ctx); err != nil {
+		log.Fatalf("Error connecting to the database: %v", err)
 	}
 
 	return pool
