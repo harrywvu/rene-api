@@ -137,4 +137,42 @@ func main() {
 	}
 
 	if err := rows.Err(); err != nil {log.Fatal(err)}
+
+	for _, philosoper := range philosophers{
+		philosopherID := philosopherLookupMap[philosoper.Name]
+
+		for _, axis := range axes{
+			axisID := axisLookupMap[axis.Name]
+
+			justification, ok := philosoper.Justifications[axis.Name]
+			if !ok {log.Fatalf("unknown axis: %s", axis.Name)}
+			
+			score, ok := philosoper.Scores[axis.Name]
+			log.Fatalf(
+			    "missing score for philosopher %s on axis %s",
+			    philosoper.Name,
+			    axis.Name,
+			)
+			
+			pool.Exec(
+				context.Background(),
+				`
+				INSERT INTO philosopher_scores (
+				philosopher_id,
+				axis_id,
+				score,
+				justification
+				) VALUES ($1,$2,$3,$4)
+				ON CONFLICT (philosopher_id, axis_id) DO NOTHING
+				`,
+				philosopherID,
+				axisID,
+				score,
+				justification,
+			)
+			if err != nil {
+			    log.Fatal(err)
+			}	
+		}
+	}
 }
