@@ -14,7 +14,7 @@ type Question struct {
     Axis   string  `json:"axis"`
 }
 
-	type Philosopher struct {
+type Philosopher struct {
     Name           string             `json:"name"`
     Scores         map[string]float64 `json:"scores"`
     Justifications map[string]string  `json:"justifications"`

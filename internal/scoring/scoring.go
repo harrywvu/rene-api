@@ -9,7 +9,7 @@ import (
 )
 
 var QUESTIONS_PER_AXIS = 3
-// 								question_id → score				question_id → axis_name 
+// 								question_id → score		question_id → axis_name 
 func ComputeUserProfile(answers []models.Answer, questionAxisMap map[int]string) map[string]float64{
 	userProfile := make(map[string]float64) // axis -> score
 
@@ -25,7 +25,7 @@ func ComputeUserProfile(answers []models.Answer, questionAxisMap map[int]string)
 }
 
 func CalculateDistance(userProfile map[string]float64, philosopherScores map[string]float64) float64{
-	// loop through all axes and su		btract philosopherScores from userProfile
+	// loop through all axes and su	btract philosopherScores from userProfile
 	var sum float64
 	for axis := range userProfile{
 		diff := philosopherScores[axis] - userProfile[axis]

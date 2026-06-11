@@ -95,14 +95,13 @@ func main() {
 	}
 	defer rows.Close()
 
+	// fill up axisLookupMap
 	for rows.Next() {
 		var name string
 		var id int
 
 		err := rows.Scan(&name, &id)
-		if err != nil {
-			log.Fatal(err)
-		}
+		if err != nil {log.Fatal(err)}
 
 		axisLookupMap[name] = id
 	}
