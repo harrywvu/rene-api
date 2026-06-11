@@ -1,1 +1,12 @@
-.env
+# Backend
+/server/.env
+/server/bin/
+
+# Frontend
+/client/node_modules/
+/client/dist/
+/client/.vite/
+
+# OS/editor clutter
+.DS_Store
+.vscode/
