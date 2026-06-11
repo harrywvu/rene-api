@@ -10,17 +10,22 @@ type Axis struct {
 
 type Question struct {
     Text   string  `json:"text"`
-    Weight float32 `json:"weight"`
+    Weight float64 `json:"weight"`
     Axis   string  `json:"axis"`
 }
 
-type Philosopher struct {
+	type Philosopher struct {
     Name           string             `json:"name"`
-    Scores         map[string]float32 `json:"scores"`
+    Scores         map[string]float64 `json:"scores"`
     Justifications map[string]string  `json:"justifications"`
 }
 
 type Answer struct {
 	QuestionID int     `json:"question_id"`
     Score      float64 `json:"score"`
+}
+
+type PhilosopherMatch struct {
+	Philosopher Philosopher
+	Distance float64
 }

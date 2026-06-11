@@ -1,7 +1,9 @@
 package scoring
 
 import (
+	"cmp"
 	"math"
+	"slices"
 
 	"github.com/harrywvu/rene-api/internal/models"
 )
@@ -23,7 +25,7 @@ func ComputeUserProfile(answers []models.Answer, questionAxisMap map[int]string)
 }
 
 func CalculateDistance(userProfile map[string]float64, philosopherScores map[string]float64) float64{
-	// loop through all axes and subtract philosopherScores from userProfile
+	// loop through all axes and su		btract philosopherScores from userProfile
 	var sum float64
 	for axis := range userProfile{
 		diff := philosopherScores[axis] - userProfile[axis]
@@ -33,6 +35,20 @@ func CalculateDistance(userProfile map[string]float64, philosopherScores map[str
 	return math.Sqrt(sum)
 }
 
-func RankPhilosophers(){
-	
+func RankPhilosophers(userProfile map[string]float64, philosophers []models.Philosopher) []models.PhilosopherMatch{
+	var matches []models.PhilosopherMatch
+	for _, philosopher := range philosophers{
+		res := CalculateDistance(userProfile, philosopher.Scores)
+		phlsphr := models.PhilosopherMatch{
+			Philosopher: philosopher,
+			Distance: res,
+		}
+		matches = append(matches, phlsphr)
+	}
+
+	slices.SortFunc(matches, func(a, b models.PhilosopherMatch) int {
+		return cmp.Compare(a.Distance, b.Distance)
+	})
+
+	return matches
 }
