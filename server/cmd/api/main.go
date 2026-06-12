@@ -14,6 +14,14 @@ import (
 	assess "github.com/harrywvu/rene-api/internal/handlers"
 )
 
+func defaultAllowedOrigins() []string {
+	return []string{
+		"http://localhost:5173",
+		"http://127.0.0.1:5173",
+		"https://*.vercel.app",
+	}
+}
+
 func parseAllowedOrigins(value string) []string {
 	origins := make([]string, 0)
 	for _, origin := range strings.Split(value, ",") {
@@ -24,10 +32,20 @@ func parseAllowedOrigins(value string) []string {
 	}
 
 	if len(origins) == 0 {
-		return []string{"http://localhost:5173", "http://127.0.0.1:5173"}
+		return defaultAllowedOrigins()
 	}
 
-	return origins
+	merged := make([]string, 0, len(origins)+len(defaultAllowedOrigins()))
+	seen := make(map[string]struct{}, len(origins)+len(defaultAllowedOrigins()))
+	for _, origin := range append(defaultAllowedOrigins(), origins...) {
+		if _, exists := seen[origin]; exists {
+			continue
+		}
+		seen[origin] = struct{}{}
+		merged = append(merged, origin)
+	}
+
+	return merged
 }
 
 func loadDotEnv(path string) error {

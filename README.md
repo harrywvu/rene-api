@@ -58,6 +58,8 @@ The API also accepts:
 
 The server listens on `:8080` by default, or on `PORT` when set.
 
+By default, the API allows requests from local Vite dev servers and `*.vercel.app` deployments. Set `CORS_ALLOWED_ORIGINS` on Render if you want to restrict that further or add a custom frontend domain.
+
 ### Run
 
 ```bash
