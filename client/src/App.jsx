@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react'
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080').replace(
+  /\/+$/,
+  '',
+)
+const assessRequestUrl =
+  import.meta.env.DEV && !import.meta.env.VITE_API_BASE_URL
+    ? '/assess'
+    : `${apiBaseUrl}/assess`
 
 const scale = [
   { value: 0, label: 'SD' },
@@ -174,6 +181,17 @@ async function fetchPortrait(name) {
   }
 }
 
+function highlightJson(json) {
+  return json
+    .replace(/("(\\.|[^"\\])*")(\s*:)?/g, (match, str, _esc, colon) =>
+      colon
+        ? `<span class="json-key">${str}</span>${colon}`
+        : `<span class="json-string">${str}</span>`,
+    )
+    .replace(/\b(\d+\.?\d*)\b/g, '<span class="json-number">$1</span>')
+    .replace(/\b(true|false|null)\b/g, '<span class="json-bool">$1</span>')
+}
+
 function getRadarPoints(values, width = 460, height = 420, radius = 136) {
   const centerX = width / 2
   const centerY = height / 2
@@ -302,6 +320,9 @@ function App() {
   const [portraits, setPortraits] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [tryItResult, setTryItResult] = useState(null)
+  const [tryItLoading, setTryItLoading] = useState(false)
+  const [tryItError, setTryItError] = useState(null)
 
   const payload = useMemo(
     () =>
@@ -321,7 +342,7 @@ function App() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${apiBaseUrl}/assess`, {
+      const res = await fetch(assessRequestUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -346,6 +367,29 @@ function App() {
       setError(err.message)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function handleTryIt() {
+    setTryItLoading(true)
+    setTryItError(null)
+    try {
+      const samplePayload = allQuestions.map((q) => ({
+        question_id: q.id,
+        score: 0.5,
+      }))
+      const res = await fetch(assessRequestUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(samplePayload),
+      })
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      const data = await res.json()
+      setTryItResult(data.slice(0, 3))
+    } catch (err) {
+      setTryItError(err.message)
+    } finally {
+      setTryItLoading(false)
     }
   }
 
@@ -400,13 +444,11 @@ function App() {
       <main className="main-stage">
         {page === 'home' && (
           <section className="hero-view view-enter">
-            <div className="hero-copy">
               <p className="eyebrow">POST /assess</p>
               <h1>Elegant API for philosophical matching.</h1>
               <p className="lede">
                 René accepts a structured response set and returns the philosopher
-                who most closely reflects the user’s positions. The interface
-                should feel measured, refined, and quietly ceremonial.
+                who most closely reflects the user’s positions.
               </p>
 
               <div className="hero-actions">
@@ -425,22 +467,53 @@ function App() {
                   View result format
                 </button>
               </div>
+          </section>
+        )}
+
+        {page === 'home' && (
+          <section className="try-it-section view-enter">
+            <div className="page-intro">
+              <p className="eyebrow">Try it now</p>
+              <h2>Send a sample request</h2>
+              <p>
+                This sends a neutral response set (every question answered at
+                0.5) to the live API and shows the raw JSON returned.
+              </p>
             </div>
 
-            <aside className="hero-sidebar">
-              <div className="quiet-card">
-                <p className="quiet-label">Endpoint</p>
-                <code>{apiBaseUrl}/assess</code>
+            <div className="try-it-panel">
+              <div className="try-it-meta">
+                <div className="meta-item">
+                  <span className="meta-label">Endpoint</span>
+                  <code>{apiBaseUrl}/assess</code>
+                </div>
+                <div className="meta-item">
+                  <span className="meta-label">Payload</span>
+                  <span>18 questions, every answer set to 0.5</span>
+                </div>
               </div>
-              <div className="quiet-card">
-                <p className="quiet-label">Payload</p>
-                <p>JSON array of question_id and score pairs.</p>
-              </div>
-              <div className="quiet-card">
-                <p className="quiet-label">Result</p>
-                <p>Ranked philosophers with scores and justifications.</p>
-              </div>
-            </aside>
+
+              <button
+                className="primary-button"
+                type="button"
+                onClick={handleTryIt}
+                disabled={tryItLoading}
+              >
+                {tryItLoading ? 'Sending…' : 'Run sample request'}
+              </button>
+
+              {tryItError && <p className="error-note">{tryItError}</p>}
+
+              {tryItResult && (
+                <pre className="code-block try-it-result">
+                  <code
+                    dangerouslySetInnerHTML={{
+                      __html: highlightJson(JSON.stringify(tryItResult, null, 2)),
+                    }}
+                  />
+                </pre>
+              )}
+            </div>
           </section>
         )}
 

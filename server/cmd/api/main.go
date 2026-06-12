@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -12,6 +13,22 @@ import (
 	"github.com/harrywvu/rene-api/internal/db"
 	assess "github.com/harrywvu/rene-api/internal/handlers"
 )
+
+func parseAllowedOrigins(value string) []string {
+	origins := make([]string, 0)
+	for _, origin := range strings.Split(value, ",") {
+		origin = strings.TrimSpace(origin)
+		if origin != "" {
+			origins = append(origins, origin)
+		}
+	}
+
+	if len(origins) == 0 {
+		return []string{"http://localhost:5173", "http://127.0.0.1:5173"}
+	}
+
+	return origins
+}
 
 func loadDotEnv(path string) error {
 	file, err := os.Open(path)
@@ -56,13 +73,17 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     parseAllowedOrigins(os.Getenv("CORS_ALLOWED_ORIGINS")),
+		AllowWildcard:    true,
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
 	}))
 	pool := db.ConnectDB()
+	r.GET("/healthz", func(c *gin.Context) {
+		c.Status(http.StatusOK)
+	})
 	r.POST("/assess", assess.Assess(pool))
 
 	port := os.Getenv("PORT")

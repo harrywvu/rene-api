@@ -42,7 +42,7 @@ npm install
 npm run dev
 ```
 
-By default the client talks to `http://localhost:8080`. Set `VITE_API_BASE_URL` if you want it to point at another API host.
+By default the client sends browser requests to Vite's local `/assess` proxy during `npm run dev` and `npm run preview`, which forwards them to `http://localhost:8080`. Set `VITE_API_BASE_URL` if you want it to point at another API host directly.
 
 ## API
 
@@ -51,6 +51,10 @@ By default the client talks to `http://localhost:8080`. Set `VITE_API_BASE_URL` 
 The API reads a single required environment variable:
 
 - `DSN`: PostgreSQL connection string
+
+The API also accepts:
+
+- `CORS_ALLOWED_ORIGINS`: comma-separated list of allowed browser origins, including wildcard origins such as `https://*.vercel.app`
 
 The server listens on `:8080` by default, or on `PORT` when set.
 
@@ -256,6 +260,70 @@ go run ./cmd/seed
 ```bash
 go run ./cmd/api
 ```
+
+## Deployment
+
+The app is deployed as two separate services:
+
+- Client on Vercel
+- API on Render
+
+Deploy the API first so you have the final service URL for the client build.
+
+### Client on Vercel
+
+Use the `client/` directory as the Vercel root.
+
+Set:
+
+- Build Command: `npm run build`
+- Output Directory: `dist`
+- Install Command: leave default or `npm install`
+
+Add this environment variable in Vercel:
+
+- `VITE_API_BASE_URL=https://<your-render-service>.onrender.com`
+
+Important:
+
+- `VITE_API_BASE_URL` is baked into the client at build time.
+- If you change it in Vercel, redeploy the client.
+- Do not point it at `localhost` in production.
+
+If you use Vercel preview deployments and want them to call the Render API too, set the same `VITE_API_BASE_URL` value for the Preview environment as well.
+
+### API on Render
+
+Use the `server/` directory as the Render root.
+
+Set:
+
+- Build Command: `go build -o bin/api ./cmd/api`
+- Start Command: `./bin/api`
+
+Required environment variables on Render:
+
+- `DSN=postgresql://user:password@host:5432/dbname?sslmode=require`
+- `CORS_ALLOWED_ORIGINS=https://<your-vercel-app>.vercel.app`
+
+Optional if you want Vercel preview deployments to work without updating Render each time:
+
+- `CORS_ALLOWED_ORIGINS=https://<your-vercel-app>.vercel.app,https://*.vercel.app`
+
+Notes:
+
+- `https://*.vercel.app` is convenient for preview deployments, but it allows any Vercel-hosted site to call the API from the browser.
+- If you want a tighter policy, keep only the exact production Vercel origin.
+- Render provides `PORT` automatically; the server already listens on it.
+- The API also exposes `GET /healthz` for service checks.
+
+### Deployment order
+
+1. Deploy the Render API.
+2. Copy the Render service URL.
+3. Put that URL into Vercel as `VITE_API_BASE_URL`.
+4. Deploy the Vercel client.
+5. If the client still gets CORS errors, check that `CORS_ALLOWED_ORIGINS` matches the exact browser origin shown in the address bar.
 
 ## Tech Stack
 
