@@ -2,11 +2,9 @@ package assess
 
 import (
 	"context"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/harrywvu/rene-api/internal/db"
 	"github.com/harrywvu/rene-api/internal/models"
 	"github.com/harrywvu/rene-api/internal/scoring"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -20,14 +18,13 @@ func Assess(pool *pgxpool.Pool) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		// Query DB → build map[int]string (question_id → axis name)
-		pool := db.ConnectDB()
-		defer pool.Close()
 
+		// Query DB → build map[int]string (question_id → axis name)
 		questionAxisMap := make(map[int]string)
 		rows, err := pool.Query(context.Background(), "SELECT questions.id, axes.name FROM questions JOIN axes ON questions.axis_id = axes.id")
 		if err != nil {
-			log.Fatal(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
 		}
 		defer rows.Close()
 
@@ -38,14 +35,16 @@ func Assess(pool *pgxpool.Pool) gin.HandlerFunc {
 
 			err := rows.Scan(&question_id, &axis_name)
 			if err != nil {
-				log.Fatal(err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
 			}
 
 			questionAxisMap[question_id] = axis_name
 		}
 
 		if err := rows.Err(); err != nil {
-			log.Fatal(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
 		}
 
 		// Call ComputeUserProfile → get user's axis profile

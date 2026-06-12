@@ -8,18 +8,23 @@ import (
 	"github.com/harrywvu/rene-api/internal/models"
 )
 
-var QUESTIONS_PER_AXIS = 3
-// 								question_id → score		question_id → axis_name 
-func ComputeUserProfile(answers []models.Answer, questionAxisMap map[int]string) map[string]float64{
-	userProfile := make(map[string]float64) // axis -> score
+func ComputeUserProfile(answers []models.Answer, questionAxisMap map[int]string) map[string]float64 {
+	sums := make(map[string]float64)
+	counts := make(map[string]int)
 
-	// add up all the FREAKING scores by axis
-	for _, answer := range answers{
-		answerAxis := questionAxisMap[answer.QuestionID]
-		userProfile[answerAxis] += answer.Score
+	for _, answer := range answers {
+		axis, ok := questionAxisMap[answer.QuestionID]
+		if !ok {
+			continue
+		}
+		sums[axis] += answer.Score
+		counts[axis]++
 	}
 
-	for _, axis := range questionAxisMap {userProfile[axis] /= float64(QUESTIONS_PER_AXIS)}
+	userProfile := make(map[string]float64)
+	for axis, sum := range sums {
+		userProfile[axis] = sum / float64(counts[axis])
+	}
 
 	return userProfile
 }

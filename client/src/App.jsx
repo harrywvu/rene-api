@@ -129,87 +129,6 @@ const allQuestions = questionGroups.flatMap((group) =>
   })),
 )
 
-const sampleMatches = [
-  {
-    name: 'Plato',
-    distance: '0.123',
-    scores: {
-      epistemology: 0.15,
-      metaphysics: 0.08,
-      ethics: 0.12,
-      free_will: 0.5,
-      politics: 0.18,
-      theology: 0.22,
-    },
-    justifications: {
-      epistemology:
-        'Plato grounds knowledge in reason and recollection rather than sensory certainty.',
-      metaphysics:
-        'The Theory of Forms places true reality beyond the material world.',
-      ethics:
-        'The Good is objective and discoverable through philosophical inquiry.',
-      free_will:
-        'Plato gestures toward agency, though the dialogues leave the issue partly open.',
-      politics:
-        'The Republic envisions an ordered hierarchy governed by philosopher-kings.',
-      theology:
-        'The cosmos is ordered by a divine Demiurge in the Timaeus.',
-    },
-  },
-  {
-    name: 'Aristotle',
-    distance: '0.241',
-    scores: {
-      epistemology: 0.31,
-      metaphysics: 0.28,
-      ethics: 0.37,
-      free_will: 0.44,
-      politics: 0.33,
-      theology: 0.29,
-    },
-    justifications: {
-      epistemology:
-        'Aristotle begins from experience and proceeds by careful classification.',
-      metaphysics:
-        'He remains more grounded in substance, form, and observable reality.',
-      ethics:
-        'Virtue ethics treats moral flourishing as objective but practical.',
-      free_will:
-        'His account of voluntary action leaves room for deliberative responsibility.',
-      politics:
-        'He values civic order, but his politics are less utopian than Plato’s.',
-      theology:
-        'His unmoved mover is philosophical rather than devotional in character.',
-    },
-  },
-  {
-    name: 'Kant',
-    distance: '0.388',
-    scores: {
-      epistemology: 0.46,
-      metaphysics: 0.39,
-      ethics: 0.56,
-      free_will: 0.61,
-      politics: 0.47,
-      theology: 0.44,
-    },
-    justifications: {
-      epistemology:
-        'Kant gives reason a central role while limiting what experience can reveal.',
-      metaphysics:
-        'His critical philosophy distinguishes appearances from things-in-themselves.',
-      ethics:
-        'Duty and universal law are central to his moral philosophy.',
-      free_will:
-        'Freedom is necessary for moral responsibility in his system.',
-      politics:
-        'He supports ordered rights, though not authoritarian control.',
-      theology:
-        'God is a postulate of practical reason rather than empirical fact.',
-    },
-  },
-]
-
 const pageOrder = ['home', 'questions', 'response']
 
 const axisOrder = [
@@ -242,26 +161,42 @@ function buildAxisProfile(questionGroups, answers) {
   }, {})
 }
 
-function getRadarPoints(values, size = 420, radius = 136) {
-  const center = size / 2
+async function fetchPortrait(name) {
+  try {
+    const res = await fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`,
+    )
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.thumbnail?.source ?? null
+  } catch {
+    return null
+  }
+}
+
+function getRadarPoints(values, width = 460, height = 420, radius = 136) {
+  const centerX = width / 2
+  const centerY = height / 2
 
   return axisOrder.map((axis, index) => {
     const angle = -Math.PI / 2 + (Math.PI * 2 * index) / axisOrder.length
     const value = values[axis] ?? 0
     const distance = radius * value
-    const x = center + Math.cos(angle) * distance
-    const y = center + Math.sin(angle) * distance
+    const x = centerX + Math.cos(angle) * distance
+    const y = centerY + Math.sin(angle) * distance
 
     return `${x},${y}`
   })
 }
 
 function RadarChart({ userProfile, philosopherProfile, title }) {
-  const size = 420
-  const center = size / 2
+  const width = 460
+  const height = 420
+  const centerX = width / 2
+  const centerY = height / 2
   const rings = [0.2, 0.4, 0.6, 0.8, 1]
-  const userPoints = getRadarPoints(userProfile, size)
-  const philosopherPoints = getRadarPoints(philosopherProfile, size)
+  const userPoints = getRadarPoints(userProfile, width, height)
+  const philosopherPoints = getRadarPoints(philosopherProfile, width, height)
 
   return (
     <figure className="radar-card">
@@ -270,22 +205,11 @@ function RadarChart({ userProfile, philosopherProfile, title }) {
           <p className="eyebrow">Radar chart</p>
           <h3>{title}</h3>
         </div>
-
-        <div className="radar-legend">
-          <span>
-            <i className="legend-swatch legend-user" />
-            User
-          </span>
-          <span>
-            <i className="legend-swatch legend-philosopher" />
-            Philosopher
-          </span>
-        </div>
       </figcaption>
 
       <svg
         className="radar-svg"
-        viewBox={`0 0 ${size} ${size}`}
+        viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={title}
       >
@@ -294,8 +218,8 @@ function RadarChart({ userProfile, philosopherProfile, title }) {
           return (
             <circle
               key={ring}
-              cx={center}
-              cy={center}
+              cx={centerX}
+              cy={centerY}
               r={ringRadius}
               className="radar-grid-ring"
             />
@@ -304,17 +228,17 @@ function RadarChart({ userProfile, philosopherProfile, title }) {
 
         {axisOrder.map((axis, index) => {
           const angle = -Math.PI / 2 + (Math.PI * 2 * index) / axisOrder.length
-          const x = center + Math.cos(angle) * 136
-          const y = center + Math.sin(angle) * 136
-          const labelRadius = 160
-          const lx = center + Math.cos(angle) * labelRadius
-          const ly = center + Math.sin(angle) * labelRadius
+          const x = centerX + Math.cos(angle) * 136
+          const y = centerY + Math.sin(angle) * 136
+          const labelRadius = 145
+          const lx = centerX + Math.cos(angle) * labelRadius
+          const ly = centerY + Math.sin(angle) * labelRadius
 
           return (
             <g key={axis}>
               <line
-                x1={center}
-                y1={center}
+                x1={centerX}
+                y1={centerY}
                 x2={x}
                 y2={y}
                 className="radar-axis-line"
@@ -339,10 +263,10 @@ function RadarChart({ userProfile, philosopherProfile, title }) {
           const userAngle = -Math.PI / 2 + (Math.PI * 2 * index) / axisOrder.length
           const philosopherValue = philosopherProfile[axis] ?? 0
           const userValue = userProfile[axis] ?? 0
-          const ux = center + Math.cos(userAngle) * 136 * userValue
-          const uy = center + Math.sin(userAngle) * 136 * userValue
-          const px = center + Math.cos(userAngle) * 136 * philosopherValue
-          const py = center + Math.sin(userAngle) * 136 * philosopherValue
+          const ux = centerX + Math.cos(userAngle) * 136 * userValue
+          const uy = centerY + Math.sin(userAngle) * 136 * userValue
+          const px = centerX + Math.cos(userAngle) * 136 * philosopherValue
+          const py = centerY + Math.sin(userAngle) * 136 * philosopherValue
 
           return (
             <g key={`${axis}-points`}>
@@ -352,6 +276,17 @@ function RadarChart({ userProfile, philosopherProfile, title }) {
           )
         })}
       </svg>
+
+      <div className="radar-legend">
+        <span>
+          <i className="legend-swatch legend-user" />
+          User
+        </span>
+        <span>
+          <i className="legend-swatch legend-philosopher" />
+          Philosopher
+        </span>
+      </div>
     </figure>
   )
 }
@@ -363,6 +298,10 @@ function App() {
   )
   const [requestVisible, setRequestVisible] = useState(false)
   const [selectedMatchIndex, setSelectedMatchIndex] = useState(0)
+  const [matches, setMatches] = useState([])
+  const [portraits, setPortraits] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const payload = useMemo(
     () =>
@@ -378,8 +317,39 @@ function App() {
     [answers],
   )
 
-  const selectedMatch = sampleMatches[selectedMatchIndex]
+  async function handleSubmit() {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(`${apiBaseUrl}/assess`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      const data = await res.json()
+      const normalized = data.map((item) => ({
+        name: item.philosopher.name,
+        scores: item.philosopher.scores,
+        justifications: item.philosopher.justifications,
+        distance: item.distance.toFixed(4),
+      }))
+      const top3 = normalized.slice(0, 3)
+      setMatches(top3)
+      const portraitEntries = await Promise.all(
+        top3.map(async (match) => [match.name, await fetchPortrait(match.name)]),
+      )
+      setPortraits(Object.fromEntries(portraitEntries))
+      setSelectedMatchIndex(0)
+      setPage('response')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  const selectedMatch = matches[selectedMatchIndex]
   const payloadString = JSON.stringify(payload, null, 2)
   const curlSnippet = `curl -X POST "${apiBaseUrl}/assess" \\
   -H "Content-Type: application/json" \\
@@ -551,6 +521,17 @@ function App() {
                     </div>
                   </section>
                 ))}
+                <div className="submit-row">
+                  {error && <p className="error-note">{error}</p>}
+                  <button
+                    className="primary-button"
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={loading}
+                  >
+                    {loading ? 'Computing…' : 'Submit assessment'}
+                  </button>
+                </div>
               </div>
 
               {requestVisible ? (
@@ -573,77 +554,104 @@ function App() {
         )}
 
         {page === 'response' && (
-          <section className="page-frame view-enter">
-            <div className="page-intro">
-              <p className="eyebrow">Result</p>
-              <h2>Ranked response</h2>
-              <p>
-                The API returns the closest philosopher first, followed by the
-                full score map and justifications for each axis.
-              </p>
-            </div>
+          matches.length === 0 ? (
+            <section className="page-frame view-enter">
+              <div className="page-intro">
+                <p className="eyebrow">Result</p>
+                <h2>No results yet</h2>
+                <p>Complete the assessment and submit to see your matches.</p>
+              </div>
+              <button
+                className="primary-button"
+                type="button"
+                onClick={() => setPage('questions')}
+              >
+                Go to assessment
+              </button>
+            </section>
+          ) : (
+            <section className="page-frame view-enter response-page">
+              <div className="page-intro">
+                <p className="eyebrow">Result</p>
+                <h2>Ranked response</h2>
+                <p>
+                  The API returns the closest philosopher first, followed by the
+                  full score map and justifications for each axis.
+                </p>
+              </div>
 
-            <div className="response-layout">
-              <aside className="response-sidebar">
-                <div className="summary-card">
-                  <p className="quiet-label">Endpoint</p>
-                  <code>{apiBaseUrl}/assess</code>
-                </div>
-                <div className="summary-card">
-                  <p className="quiet-label">Selected match</p>
-                  <p>{selectedMatch.name}</p>
-                </div>
-                <div className="match-picker">
-                  <p className="quiet-label">Runner-ups</p>
-                  {sampleMatches.map((match, index) => (
-                    <button
-                      key={match.name}
-                      type="button"
-                      className={index === selectedMatchIndex ? 'pick-chip active' : 'pick-chip'}
-                      onClick={() => setSelectedMatchIndex(index)}
-                    >
-                      <span>#{index + 1}</span>
-                      <strong>{match.name}</strong>
-                      <em>{match.distance}</em>
-                    </button>
-                  ))}
-                </div>
-              </aside>
+              <div className="match-tabs">
+                {matches.map((match, index) => (
+                  <button
+                    key={match.name}
+                    type="button"
+                    className={index === selectedMatchIndex ? 'match-tab active' : 'match-tab'}
+                    onClick={() => setSelectedMatchIndex(index)}
+                  >
+                    <span className="match-tab-rank">#{index + 1}</span>
+                    <span className="match-tab-name">{match.name}</span>
+                    <span className="match-tab-distance">{match.distance}</span>
+                  </button>
+                ))}
+              </div>
 
-              <div className="response-main">
-                <RadarChart
-                  title={`User profile vs ${selectedMatch.name}`}
-                  userProfile={userProfile}
-                  philosopherProfile={selectedMatch.scores}
-                />
+              <div className="response-columns">
+                <div className="result-panel radar-panel">
+                  <RadarChart
+                    title={`User profile vs ${selectedMatch.name}`}
+                    userProfile={userProfile}
+                    philosopherProfile={selectedMatch.scores}
+                  />
+                </div>
 
-                <article className="result-card selected-result">
-                  <div className="result-topline">
-                    <span className="result-rank">#{selectedMatchIndex + 1}</span>
-                    <span className="result-distance">distance {selectedMatch.distance}</span>
+                <div className="result-panel profile-panel">
+                  <div className="profile-header">
+                    <div className="portrait-frame">
+                      {portraits[selectedMatch.name] ? (
+                        <img
+                          src={portraits[selectedMatch.name]}
+                          alt={selectedMatch.name}
+                          className="portrait-image"
+                        />
+                      ) : (
+                        <div className="portrait-placeholder">
+                          {selectedMatch.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="profile-header-text">
+                      <h3>{selectedMatch.name}</h3>
+                      <span className="result-distance">
+                        distance {selectedMatch.distance}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="result-title-row">
-                    <h3>{selectedMatch.name}</h3>
-                    <span className="result-orb" aria-hidden="true" />
-                  </div>
-
-                  <p className="result-summary">
-                    {selectedMatch.justifications.epistemology}
-                  </p>
-
-                  <div className="mini-score-grid">
-                    {Object.entries(selectedMatch.scores).map(([axis, value]) => (
-                      <div className="mini-score" key={axis}>
-                        <span>{axisLabels[axis]}</span>
-                        <strong>{value}</strong>
+                  <div className="justification-grid">
+                    {axisOrder.map((axis) => (
+                      <div className="justification-item" key={axis}>
+                        <div className="justification-header">
+                          <span className="justification-axis">{axisLabels[axis]}</span>
+                          <span className="justification-score">
+                            {selectedMatch.scores[axis]}
+                          </span>
+                        </div>
+                        <div className="score-bar-track">
+                          <div
+                            className="score-bar-fill"
+                            style={{ width: `${selectedMatch.scores[axis] * 100}%` }}
+                          />
+                        </div>
+                        <p className="justification-text">
+                          {selectedMatch.justifications[axis]}
+                        </p>
                       </div>
                     ))}
                   </div>
-                </article>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )
         )}
       </main>
 
