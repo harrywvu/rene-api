@@ -118,6 +118,8 @@ Response:
 
 The response is sorted from closest match to farthest match.
 
+The `POST /assess` endpoint enforces per-IP rate limiting, rejects malformed or incomplete payloads, and times out slow requests.
+
 ## Data Model
 
 The database contains:
@@ -140,7 +142,7 @@ The database contains:
 
 ## Questionnaire
 
-The question bank from `server/questions.md` is grouped by axis.
+The questionnaire is defined in the client and mirrored in the seed data, with 18 questions grouped across the six axes above.
 
 ### EPISTEMOLOGY
 

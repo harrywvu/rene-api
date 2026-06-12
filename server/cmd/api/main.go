@@ -1,17 +1,22 @@
 package main
 
 import (
+	"context"
 	"bufio"
+	"errors"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/harrywvu/rene-api/internal/db"
 	assess "github.com/harrywvu/rene-api/internal/handlers"
+	"github.com/harrywvu/rene-api/internal/middleware"
 )
 
 func defaultAllowedOrigins() []string {
@@ -89,7 +94,8 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Logger(), gin.Recovery())
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     parseAllowedOrigins(os.Getenv("CORS_ALLOWED_ORIGINS")),
 		AllowWildcard:    true,
@@ -99,15 +105,60 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 	pool := db.ConnectDB()
+
 	r.GET("/healthz", func(c *gin.Context) {
 		c.Status(http.StatusOK)
 	})
-	r.POST("/assess", assess.Assess(pool))
+	assessLimiter := middleware.NewRateLimiter(60, time.Minute)
+	r.POST("/assess", assessLimiter.Middleware(), assess.Assess(pool))
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	r.Run(":" + port)
+	server := &http.Server{
+		Addr:              ":" + port,
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      15 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+
+	serverErr := make(chan error, 1)
+	go func() {
+		err := server.ListenAndServe()
+		if !errors.Is(err, http.ErrServerClosed) {
+			serverErr <- err
+			return
+		}
+		serverErr <- nil
+	}()
+
+	stopCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	select {
+	case <-stopCtx.Done():
+	case err := <-serverErr:
+		if err != nil {
+			log.Fatalf("server failed: %v", err)
+		}
+		return
+	}
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(shutdownCtx); err != nil {
+		log.Printf("graceful shutdown failed: %v", err)
+		if closeErr := server.Close(); closeErr != nil {
+			log.Printf("forced shutdown failed: %v", closeErr)
+		}
+	}
+
+	if err := <-serverErr; err != nil {
+		log.Fatalf("server exited with error: %v", err)
+	}
 }

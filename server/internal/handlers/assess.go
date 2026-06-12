@@ -2,6 +2,7 @@ package assess
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,47 +13,39 @@ import (
 
 func Assess(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Parse request body → []models.Answer
-		var answers []models.Answer
-		if err := c.ShouldBindJSON(&answers); err != nil {
+		answers, err := decodeAnswers(c)
+		if err != nil {
+			status := http.StatusBadRequest
+			var maxBytesError *http.MaxBytesError
+			if errors.As(err, &maxBytesError) {
+				status = http.StatusRequestEntityTooLarge
+			}
+			c.JSON(status, gin.H{"error": err.Error()})
+			return
+		}
+
+		ctx, cancel := context.WithTimeout(c.Request.Context(), requestTimeout)
+		defer cancel()
+
+		questionAxisMap, err := loadQuestionAxisMap(ctx, pool)
+		if err != nil {
+			if errors.Is(ctx.Err(), context.DeadlineExceeded) {
+				c.JSON(http.StatusGatewayTimeout, gin.H{"error": "request timed out"})
+				return
+			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if err := validateAnswers(answers, questionAxisMap); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		// Query DB → build map[int]string (question_id → axis name)
-		questionAxisMap := make(map[int]string)
-		rows, err := pool.Query(context.Background(), "SELECT questions.id, axes.name FROM questions JOIN axes ON questions.axis_id = axes.id")
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		defer rows.Close()
-
-		// fill up questionLookupMap
-		for rows.Next() {
-			var question_id int
-			var axis_name string
-
-			err := rows.Scan(&question_id, &axis_name)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				return
-			}
-
-			questionAxisMap[question_id] = axis_name
-		}
-
-		if err := rows.Err(); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
-		// Call ComputeUserProfile → get user's axis profile
 		userProfile := scoring.ComputeUserProfile(answers, questionAxisMap)
 
-		// Query DB → get all philosophers with their scores
 		philosopherRows, err := pool.Query(
-			context.Background(),
+			ctx,
 			`
 		    SELECT philosophers.id, philosophers.name, axes.name, philosopher_scores.score, philosopher_scores.justification
 		    FROM philosopher_scores
@@ -61,6 +54,10 @@ func Assess(pool *pgxpool.Pool) gin.HandlerFunc {
 		    `,
 		)
 		if err != nil {
+			if errors.Is(ctx.Err(), context.DeadlineExceeded) {
+				c.JSON(http.StatusGatewayTimeout, gin.H{"error": "request timed out"})
+				return
+			}
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -90,11 +87,9 @@ func Assess(pool *pgxpool.Pool) gin.HandlerFunc {
 		for _, p := range philosopherMap {
 			philosophers = append(philosophers, *p)
 		}
-		// Call RankPhilosophers → get sorted matches
+
 		matches := scoring.RankPhilosophers(userProfile, philosophers)
 
-		// Return top result + runners up as JSON
 		c.JSON(http.StatusOK, matches)
 	}
-
 }
