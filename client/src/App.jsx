@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import MarkdownDocument, { extractMarkdownHeadings } from './components/MarkdownDocument'
+import developerDocs from './docs/developer.md?raw'
 
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080').replace(
   /\/+$/,
@@ -136,7 +138,7 @@ const allQuestions = questionGroups.flatMap((group) =>
   })),
 )
 
-const pageOrder = ['home', 'questions', 'response']
+const pageOrder = ['home', 'questions', 'response', 'docs']
 
 const axisOrder = [
   'epistemology',
@@ -337,6 +339,7 @@ function App() {
     () => buildAxisProfile(questionGroups, answers),
     [answers],
   )
+  const docsHeadings = useMemo(() => extractMarkdownHeadings(developerDocs), [])
 
   async function handleSubmit() {
     setLoading(true)
@@ -437,6 +440,13 @@ function App() {
             onClick={() => setPage('response')}
           >
             Response
+          </button>
+          <button
+            className={page === 'docs' ? 'nav-link active' : 'nav-link'}
+            type="button"
+            onClick={() => setPage('docs')}
+          >
+            Docs
           </button>
         </nav>
       </header>
@@ -725,6 +735,50 @@ function App() {
               </div>
             </section>
           )
+        )}
+
+        {page === 'docs' && (
+          <section className="page-frame view-enter docs-page">
+            <div className="page-intro">
+              <p className="eyebrow">Developer docs</p>
+              <h2>Implementation notes and API contract</h2>
+              <p>
+                This section is rendered from the markdown source at{' '}
+                <code>client/src/docs/developer.md</code>.
+              </p>
+            </div>
+
+            <div className="docs-layout">
+              <aside className="docs-sidebar">
+                <div className="docs-summary">
+                  <p className="quiet-label">At a glance</p>
+                  <ul className="docs-facts">
+                    <li>Vite + React frontend</li>
+                    <li>Go + Gin REST API</li>
+                    <li>PostgreSQL-backed seed data</li>
+                    <li>18 questions across 6 axes</li>
+                  </ul>
+                </div>
+
+                <nav className="docs-toc" aria-label="Documentation contents">
+                  <p className="quiet-label">Contents</p>
+                  {docsHeadings.map((heading) => (
+                    <a
+                      key={heading.id}
+                      className={`docs-toc-link level-${heading.level}`}
+                      href={`#${heading.id}`}
+                    >
+                      {heading.text}
+                    </a>
+                  ))}
+                </nav>
+              </aside>
+
+              <article className="docs-article">
+                <MarkdownDocument markdown={developerDocs} />
+              </article>
+            </div>
+          </section>
         )}
       </main>
 
