@@ -1,7 +1,7 @@
 # René
 
 ## Project description
-René is a philosophical matching app with a React client and a Go REST API. Users answer a questionnaire scored on a `0.0` to `1.0` scale across six philosophical axes:
+René is a philosophical matching app with a React + TypeScript client and a Go REST API. Users answer a questionnaire scored on a `0.0` to `1.0` scale across six philosophical axes:
 
 - `epistemology`
 - `metaphysics`
@@ -41,6 +41,14 @@ npm run dev
 
 Optional frontend environment variable:
 - `VITE_API_BASE_URL`: API base URL for direct browser requests
+
+### Frontend build
+```bash
+cd client
+npm run build
+```
+
+The build runs strict TypeScript checking before Vite. Run `npm run typecheck` to check types alone. The frontend is an API demo with an adjustable six-axis profile, request/response explorer, focused questionnaire, and illustrated match comparisons. SVG motion respects reduced-motion preferences.
 
 ### Seed data
 ```bash

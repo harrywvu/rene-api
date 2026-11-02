@@ -4,7 +4,7 @@
 René is a philosophical matching app with a Vite + React client and a Go REST API backed by PostgreSQL. The questionnaire spans 6 axes and 18 questions, and the seed data contains philosopher profiles scored across the same axis set.
 
 ## Repository Layout
-- `client/` - Vite frontend that renders the questionnaire, request preview, result view, and docs section.
+- `client/` - Vite frontend that renders the focused questionnaire, six-axis thought map, comparison report, and API documentation.
 - `server/` - Go API, seed CLI, migrations, and scoring logic.
 - `server/assets/` - static assets used by the backend.
 
@@ -94,8 +94,14 @@ The response is sorted from closest match to farthest match. The backend current
 The initial migration defines foreign keys from `questions.axis_id` to `axes.id` and from `philosopher_scores` to both `philosophers` and `axes`.
 
 ## Frontend Notes
-- `client/src/App.jsx` holds the questionnaire state and request payload generation.
-- The response view shows the ranked philosopher list, radar comparison, and per-axis justifications.
+- The React frontend and Vite configuration use TypeScript with strict checking.
+- Run `npm run typecheck` from `client` to check types; `npm run build` checks types before building.
+- The API demo uses a restrained paper, graphite, and cobalt theme, readable typography, keyboard controls, and reduced-motion support. Fonts and philosopher illustrations are served locally; font licenses are included in `client/public/fonts/`.
+- `client/src/App.tsx` holds the questionnaire state and request payload generation.
+- The results show three ranked philosopher matches with local SVG portraits, an animated six-axis comparison, and expandable scoring rationales.
+- Answers start unselected. All 18 statements must be answered before submission; responses stay in memory while navigating, but reset on page reload.
+- API requests time out after 15 seconds. Failed requests keep the answers available for retry.
+- The overview explorer maps six sliders to 18 answers (three equal answers per axis), shows the JSON request, and sends it to the API. Responses show the top three matches. Documentation also includes a neutral sample request.
 - The docs section renders directly from `client/src/docs/developer.md`, so that file is the source of truth for developer-facing documentation.
 
 ## Deployment Notes
