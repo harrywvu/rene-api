@@ -1,9 +1,21 @@
+import type { ReactNode } from 'react'
+
+type Heading = { id: string; level: number; text: string }
+type Block =
+  | (Heading & { type: 'heading' })
+  | { type: 'code'; code: string; lang: string }
+  | { type: 'hr' }
+  | { type: 'ul'; items: string[] }
+  | { type: 'ol'; items: string[] }
+  | { type: 'blockquote'; text: string }
+  | { type: 'paragraph'; text: string }
+
 const HEADING_RE = /^(#{1,6})\s+(.*)$/
 const BULLET_RE = /^[-*]\s+(.*)$/
 const ORDERED_RE = /^\d+\.\s+(.*)$/
 const BLOCKQUOTE_RE = /^>\s?(.*)$/
 
-function slugify(value) {
+function slugify(value: string) {
   return (
     value
       .toLowerCase()
@@ -13,8 +25,8 @@ function slugify(value) {
   )
 }
 
-function renderInline(text) {
-  const nodes = []
+function renderInline(text: string) {
+  const nodes: ReactNode[] = []
   const pattern = /`([^`]+)`/g
   let cursor = 0
   let match
@@ -39,10 +51,10 @@ function renderInline(text) {
   return nodes
 }
 
-function parseMarkdown(markdown) {
+function parseMarkdown(markdown: string) {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n')
-  const blocks = []
-  const headings = []
+  const blocks: Block[] = []
+  const headings: Heading[] = []
   let index = 0
 
   while (index < lines.length) {
@@ -143,18 +155,18 @@ function parseMarkdown(markdown) {
   return { blocks, headings }
 }
 
-export function extractMarkdownHeadings(markdown) {
+export function extractMarkdownHeadings(markdown: string) {
   return parseMarkdown(markdown).headings.filter((heading) => heading.level > 1)
 }
 
-export default function MarkdownDocument({ markdown }) {
+export default function MarkdownDocument({ markdown }: { markdown: string }) {
   const { blocks } = parseMarkdown(markdown)
 
   return (
     <div className="markdown-doc">
       {blocks.map((block, index) => {
         if (block.type === 'heading') {
-          const Tag = `h${Math.min(block.level, 6)}`
+          const Tag = `h${Math.min(block.level, 6)}` as keyof React.JSX.IntrinsicElements
           return (
             <Tag key={`${block.id}-${index}`} id={block.id} className="doc-heading">
               {block.text}
